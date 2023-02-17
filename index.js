@@ -73,7 +73,7 @@ app.get('/rumah', async(req, res) => {
               when bo.id is null then 'belum terjual'
               else bo.status_booking
             end as "status_rumah",
-            rank() over (order by r.id desc)
+            rank() over (order by r.id asc)
           from rumah r 
           left join blok b
             on b.id = r.id_blok
