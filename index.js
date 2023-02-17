@@ -100,7 +100,14 @@ app.post('/rumah/status/:idRumah', async(req, res) => {
       });
     }
 
-    res.send('ok');
+    res.send({
+      status: 'ok',
+      data: {
+        idKonsumen,
+        idRumah,
+        statusBooking
+      }
+    });
   } catch(e) {
     console.log(e);
     res.status(400).send(e.message);
@@ -126,7 +133,13 @@ app.post('/rumah/status-pembangunan/:idRumah', async(req, res) => {
       progress_pembangunan: statusPembangunan
     });
 
-    res.send('ok');
+    res.send({
+      status: 'ok',
+      data: {
+        idRumah,
+        statusPembangunan
+      }
+    });
   } catch(e) {
     console.log(e);
     res.status(400).send(e.message);
