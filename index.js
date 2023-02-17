@@ -65,6 +65,20 @@ app.post('/login', async(req, res) => {
   }
 });
 
+app.get('/blok', async(req, res) => {
+  try {
+    const blok = await sequelize.query(
+      `select * from blok`,
+      { type: sequelize.QueryTypes.SELECT }
+    );
+
+    res.send(blok);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send(e.message);
+  }
+});
+
 app.get('/rumah', async(req, res) => {
   try {
     const { namaBlok } = req.query;
