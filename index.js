@@ -65,6 +65,72 @@ app.post('/login', async(req, res) => {
   }
 });
 
+app.post('/rumah/status/:idRumah', async(req, res) => {
+  try {
+    const { idKonsumen, statusBooking } = req.body;
+    const {  idRumah } = req.params;
+
+    const dataRumah = await rumah.findOne({
+      where: {
+        id: idRumah
+      }
+    });
+
+    if (!dataRumah) {
+      throw new Error('rumah tidak ditemukan');
+    }
+
+    const bookingRumah = await booking.findOne({
+      where: {
+        id_rumah: idRumah
+      }
+    });
+
+    if (bookingRumah) {
+      bookingRumah.update({
+        status_booking: statusBooking
+      });
+    } else {
+      await booking.create({
+        id_konsumen: idKonsumen,
+        id_rumah: idRumah,
+        status_booking: statusBooking
+      });
+    }
+
+    res.send('ok');
+  } catch(e) {
+    console.log(e);
+    res.status(400).send(e.message);
+  }
+});
+
+app.post('/rumah/status-pembangunan/:idRumah', async(req, res) => {
+  try {
+    const { statusPembangunan } = req.body;
+    const { idRumah } = req.params;
+
+    const dataRumah = await rumah.findOne({
+      where: {
+        id: idRumah
+      }
+    });
+
+    if (!dataRumah) {
+      throw new Error('rumah tidak ditemukan');
+    }
+
+    dataRumah.update({
+      progress_pembangunan: statusPembangunan
+    });
+
+    res.send('ok');
+  } catch(e) {
+    console.log(e);
+    res.status(400).send(e.message);
+  }
+});
+
 app.get('/blok', async(req, res) => {
   try {
     const blok = await sequelize.query(
@@ -131,7 +197,6 @@ app.get('/rumah/:idRumah', async(req, res) => {
         from (
           select 
             r.*,
-            bo.progress_pembangunan,
             case 
               when bo.id is null then 'belum terjual'
               else bo.status_booking
@@ -177,7 +242,6 @@ app.get('/konsumen/rumah/:idKonsumen', async(req, res) => {
         from (
           select 
             r.*,
-            bo.progress_pembangunan,
             case 
               when bo.id is null then 'belum terjual'
               else bo.status_booking

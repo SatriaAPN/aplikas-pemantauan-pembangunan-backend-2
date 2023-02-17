@@ -91,6 +91,11 @@ const rumah = sequelize.define('rumah', {
     type: DataTypes.INTEGER,
     allowNull: false
   },
+  progress_pembangunan: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 0
+  },
 }, {
   // Other model options go here
   freezeTableName: true
@@ -113,11 +118,6 @@ const booking = sequelize.define('booking', {
     validate: {
       isIn: [['di booking', 'terjual']]
     }
-  },
-  progress_pembangunan: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    defaultValue: 0
   },
 }, {
   // Other model options go here
