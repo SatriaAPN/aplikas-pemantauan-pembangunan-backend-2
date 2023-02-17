@@ -50,6 +50,14 @@ app.post('/login', async(req, res) => {
 
     delete user.kata_sandi;
 
+    const dataKonsumen = await konsumen.findOne({
+      where: {
+        id_akun: user.id
+      }
+    });
+
+    user.dataValues.dataKonsumen = dataKonsumen;
+
     res.send(user);
   } catch (error) {
     console.log(error);
