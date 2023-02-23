@@ -61,8 +61,8 @@ app.post('/login', async(req, res) => {
     user.dataValues.dataKonsumen = dataKonsumen;
 
     res.send(user);
-  } catch (error) {
-    console.log(error);
+  } catch (e) {
+    console.log(e);
     res.status(400).send(e.message);
   }
 });
