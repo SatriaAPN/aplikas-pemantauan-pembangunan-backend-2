@@ -200,6 +200,40 @@ app.get('/rumah', async(req, res) => {
   }
 });
 
+app.get('/rumah/seluruh/data', async(req, res) => {
+  try {
+    const rumah = await sequelize.query(
+      `
+        select 
+          a.*,
+          Upper(:namaBlok) || a.rank as "nomorRumah"
+        from (
+          select 
+            r.*,
+            case 
+              when bo.id is null then 'belum terjual'
+              else bo.status_booking
+            end as "status_rumah",
+            rank() over (order by r.id asc)
+          from rumah r 
+          left join blok b
+            on b.id = r.id_blok
+          left join booking bo
+            on bo.id_rumah = r.id
+        ) a
+      `, 
+      { 
+        type: sequelize.QueryTypes.SELECT,
+      }
+    );
+    
+    res.send(rumah);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send(e.message);
+  }
+});
+
 app.get('/rumah/:idRumah', async(req, res) => {
   try {
     const { idRumah } = req.params;
