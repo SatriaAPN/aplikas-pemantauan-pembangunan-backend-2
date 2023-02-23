@@ -206,7 +206,7 @@ app.get('/rumah/seluruh/data', async(req, res) => {
       `
         select 
           a.*,
-          Upper(:namaBlok) || a.rank as "nomorRumah"
+          Upper(a."namaBlok") || a.rank as "nomorRumah"
         from (
           select 
             r.*,
@@ -214,7 +214,8 @@ app.get('/rumah/seluruh/data', async(req, res) => {
               when bo.id is null then 'belum terjual'
               else bo.status_booking
             end as "status_rumah",
-            rank() over (order by r.id asc)
+            rank() over (order by r.id asc),
+            b.nama as "namaBlok"
           from rumah r 
           left join blok b
             on b.id = r.id_blok
@@ -228,8 +229,8 @@ app.get('/rumah/seluruh/data', async(req, res) => {
     );
     
     res.send(rumah);
-  } catch (error) {
-    console.log(error);
+  } catch (e) {
+    console.log(e);
     res.status(400).send(e.message);
   }
 });
