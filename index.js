@@ -67,6 +67,56 @@ app.post('/login', async(req, res) => {
   }
 });
 
+app.post('/register', async(req, res) => {
+  try {
+    const { email, kataSandi, nama, noHp, role, nik, pekerjaan, alamat} = req.body;
+
+    const user = await akun.findOne({
+      where: {
+        email: {
+          [Op.iLike]: email
+        },
+      }
+    });
+
+    if (user) {
+      throw new Error('email sudah terdaftar');
+    }
+
+    const newUser = await akun.create({
+      nama,
+      email,
+      kata_sandi: kataSandi,
+      role
+    });
+
+    if(role === 'Konsumen') {
+      await konsumen.create({
+        id_akun: newUser.id,
+        nama,
+        no_telp: noHp,
+        nik,
+        pekerjaan,
+        alamat
+      });
+    }
+
+    res.send({
+      status: 'ok',
+      data: {
+        email,
+        kataSandi,
+        nama,
+        noHp
+      }
+    });
+
+  } catch (e) {
+    console.log(e);
+    res.status(400).send(e.message);
+  }
+});
+
 app.post('/rumah/status/:idRumah', async(req, res) => {
   try {
     const { idKonsumen, statusBooking } = req.body;
