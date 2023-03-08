@@ -303,7 +303,8 @@ app.get('/rumah/:idRumah', async(req, res) => {
             end as "status_rumah",
             rank() over (order by r.id desc),
             b.nama as "namaBlok",
-            k.*
+            k as "dataKonsumen",
+            a as "dataAkunKonsumen"
           from rumah r 
           left join blok b
             on b.id = r.id_blok
