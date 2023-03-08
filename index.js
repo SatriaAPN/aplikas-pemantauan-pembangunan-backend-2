@@ -117,6 +117,38 @@ app.post('/register', async(req, res) => {
   }
 });
 
+app.get('/kustomer', async(req, res) => {
+  try {
+    const dataKustomer = await sequelize.query(
+      `
+        select 
+          k.*,
+          to_json(a) as "dataAkun",
+          to_json("dataBooking") as "dataBooking"
+        from konsumen k 
+        left join akun a 
+          on a.id = k.id_akun 
+        left join (
+          select
+            b.*,
+            to_json(r) as "dataRumah" 
+          from booking b 
+          left join rumah r 
+            on r.id = b.id_rumah 
+        ) as "dataBooking"
+          on "dataBooking"."id_konsumen" = k.id 
+        order by k.id
+      `,
+      { type: sequelize.QueryTypes.SELECT }
+    );
+
+    res.send(dataKustomer);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send(error.message);
+  }
+});
+
 app.post('/rumah/status/:idRumah', async(req, res) => {
   try {
     const { idKonsumen, statusBooking } = req.body;
