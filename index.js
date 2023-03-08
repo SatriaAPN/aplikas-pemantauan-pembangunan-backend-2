@@ -253,8 +253,7 @@ app.get('/rumah', async(req, res) => {
     const rumah = await sequelize.query(
       `
         select 
-          a.*,
-          Upper(:namaBlok) || a.rank as "nomorRumah"
+          a.*
         from (
           select 
             r.*,
@@ -262,7 +261,8 @@ app.get('/rumah', async(req, res) => {
               when bo.id is null then 'belum terjual'
               else bo.status_booking
             end as "status_rumah",
-            rank() over (order by r.id asc)
+            rank() over (order by r.id asc),
+            r.nomor_rumah as "nomorRumah"
           from rumah r 
           left join blok b
             on b.id = r.id_blok
@@ -289,7 +289,7 @@ app.get('/rumah', async(req, res) => {
 app.get('/rumah/seluruh/data', async(req, res) => {
   try {
     const rumah = await sequelize.query(
-      `
+      `      
         select 
           a.*
         from (
@@ -301,7 +301,8 @@ app.get('/rumah/seluruh/data', async(req, res) => {
             end as "status_rumah",
             rank() over (order by r.id asc),
             b.nama as "namaBlok",
-            r.nomor_rumah as "nomorRumah"
+            r.nomor_rumah as "nomorRumah",
+            to_json(bo) as "dataBooking" 
           from rumah r 
           left join blok b
             on b.id = r.id_blok
@@ -340,6 +341,7 @@ app.get('/rumah/:idRumah', async(req, res) => {
             b.nama as "namaBlok",
             to_json(k)  as "dataKonsumen",
             to_json(a) as "dataAkunKonsumen",
+            to_json(bo) as "dataBooking",
             r.nomor_rumah as "nomorRumah"
           from rumah r 
           left join blok b
@@ -385,7 +387,10 @@ app.get('/konsumen/rumah/:idKonsumen', async(req, res) => {
             end as "status_rumah",
             rank() over (order by r.id desc),
             b.nama as "namaBlok",
-            r.nomor_rumah as "nomorRumah"
+            r.nomor_rumah as "nomorRumah",
+            to_json(k)  as "dataKonsumen",
+            to_json(a) as "dataAkunKonsumen",
+            to_json(bo) as "dataBooking"
           from rumah r 
           left join blok b
             on b.id = r.id_blok
