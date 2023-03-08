@@ -287,8 +287,7 @@ app.get('/rumah/seluruh/data', async(req, res) => {
     const rumah = await sequelize.query(
       `
         select 
-          a.*,
-          Upper(a."namaBlok") || a.rank as "nomorRumah"
+          a.*
         from (
           select 
             r.*,
@@ -297,7 +296,8 @@ app.get('/rumah/seluruh/data', async(req, res) => {
               else bo.status_booking
             end as "status_rumah",
             rank() over (order by r.id asc),
-            b.nama as "namaBlok"
+            b.nama as "namaBlok",
+            r.nomor_rumah as "nomorRumah"
           from rumah r 
           left join blok b
             on b.id = r.id_blok

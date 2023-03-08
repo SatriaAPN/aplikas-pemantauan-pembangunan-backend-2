@@ -96,11 +96,32 @@ const rumah = sequelize.define('rumah', {
     allowNull: false,
     defaultValue: 0
   },
+  nomor_rumah: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
 }, {
   // Other model options go here
   freezeTableName: true
 });
 
+rumah.beforeValidate(async (dataRumah, options) => {
+  const rumahBlok = await rumah.findAll({
+    where: {
+      id_blok: dataRumah.id_blok
+    }
+  });
+
+  const dataBlok = await blok.findOne({
+    where: {
+      id: dataRumah.id_blok
+    }
+  });
+
+  const nomorRumah = rumahBlok.length + 1;
+
+  dataRumah.nomor_rumah = dataBlok.nama  + nomorRumah;
+});
 
 const booking = sequelize.define('booking', {
   // Model attributes are defined here
