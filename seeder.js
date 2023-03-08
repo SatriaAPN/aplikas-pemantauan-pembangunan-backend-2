@@ -97,6 +97,13 @@ const seeder = async (model) => {
       kata_sandi: 'konsumen12',
       role: 'Konsumen'
     });
+
+    const konsumen13 = await model.akun.create({
+      nama: 'Konsumen',
+      email: 'konsumen13@gmail.com',
+      kata_sandi: 'konsumen13',
+      role: 'Konsumen'
+    });
   
     const dataKonsumen1 = await model.konsumen.create({
       id_akun: konsumen1.id,
@@ -188,6 +195,14 @@ const seeder = async (model) => {
   
     const dataKonsumen12 = await model.konsumen.create({
       id_akun: konsumen12.id,
+      nik: '1234567890123456',
+      no_telp: '081234567890',
+      alamat: 'Jl. A No. 12',
+      pekerjaan: 'Petani',
+    });
+
+    const dataKonsumen13 = await model.konsumen.create({
+      id_akun: konsumen13.id,
       nik: '1234567890123456',
       no_telp: '081234567890',
       alamat: 'Jl. A No. 12',
