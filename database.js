@@ -140,6 +140,10 @@ const booking = sequelize.define('booking', {
       isIn: [['di booking', 'terjual']]
     }
   },
+  nominal_booking: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  }
 }, {
   // Other model options go here
   freezeTableName: true
