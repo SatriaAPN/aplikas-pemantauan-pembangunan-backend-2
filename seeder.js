@@ -13,7 +13,14 @@ const seeder = async (model) => {
       kata_sandi: 'pegawai',
       role: 'Pegawai'
     });
-  
+
+    await model.akun.create({
+      nama: 'Pengawas',
+      email: 'pengawas@gmail.com',
+      kata_sandi: 'pengawas',
+      role: 'Pengawas'
+    });
+    
     const konsumen1 = await model.akun.create({
       nama: 'Konsumen',
       email: 'konsumen1@gmail.com',

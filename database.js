@@ -29,7 +29,7 @@ const akun = sequelize.define('akun', {
     allowNull: false,
     defaultValue: 'Konsumen',
     validate: {
-      isIn: [['Pegawai', 'Konsumen', 'Admin']]
+      isIn: [['Pegawai', 'Konsumen', 'Admin', "Pengawas"]]
     }
   },
 }, {
