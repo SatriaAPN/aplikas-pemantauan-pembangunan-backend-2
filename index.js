@@ -151,7 +151,7 @@ app.get('/kustomer', async(req, res) => {
 
 app.post('/rumah/status/:idRumah', async(req, res) => {
   try {
-    const { idKonsumen, statusBooking, nominalBooking } = req.body;
+    const { idKonsumen, statusBooking, nominalBooking, tanggalBooking } = req.body;
     const {  idRumah } = req.params;
 
     const dataRumah = await rumah.findOne({
@@ -173,14 +173,16 @@ app.post('/rumah/status/:idRumah', async(req, res) => {
     if (bookingRumah) {
       bookingRumah.update({
         status_booking: statusBooking,
-        nominal_booking: nominalBooking
+        nominal_booking: nominalBooking,
+        tanggal_booking: tanggalBooking
       });
     } else {
       await booking.create({
         id_konsumen: idKonsumen,
         id_rumah: idRumah,
         status_booking: statusBooking,
-        nominal_booking: nominalBooking
+        nominal_booking: nominalBooking,
+        tanggal_booking: tanggalBooking
       });
     }
 

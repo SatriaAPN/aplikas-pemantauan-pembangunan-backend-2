@@ -382,75 +382,99 @@ const seeder = async (model) => {
     await model.booking.create({
       id_konsumen: dataKonsumen1.id,
       id_rumah: rumah1.id,
-      status_booking: 'di booking'
+      status_booking: 'di booking',
+      nominal_booking: 1000000,
+      tanggal_booking: '2020-12-01'
     });
   
     await model.booking.create({
       id_konsumen: dataKonsumen2.id,
       id_rumah: rumah4.id,
-      status_booking: 'di booking'
+      status_booking: 'di booking',
+      nominal_booking: 1000000,
+      tanggal_booking: '2020-12-01'
     });
   
     await model.booking.create({
       id_konsumen: dataKonsumen3.id,
       id_rumah: rumah7.id,
-      status_booking: 'terjual'
+      status_booking: 'terjual',
+      nominal_booking: 1000000,
+      tanggal_booking: '2020-12-01'
     });
   
     await model.booking.create({
       id_konsumen: dataKonsumen4.id,
       id_rumah: rumah9.id,
-      status_booking: 'terjual'
+      status_booking: 'terjual',
+      nominal_booking: 1000000,
+      tanggal_booking: '2020-12-01'
     });
   
     // booking rumah blok 2
     await model.booking.create({
       id_konsumen: dataKonsumen5.id,
       id_rumah: rumah13.id,
-      status_booking: 'terjual'
+      status_booking: 'terjual',
+      nominal_booking: 1000000,
+      tanggal_booking: '2020-12-01'
     });
   
     await model.booking.create({
       id_konsumen: dataKonsumen6.id,
       id_rumah: rumah16.id,
-      status_booking: 'terjual'
+      status_booking: 'terjual',
+      nominal_booking: 1000000,
+      tanggal_booking: '2020-12-01'
     });
   
     await model.booking.create({
       id_konsumen: dataKonsumen7.id,
       id_rumah: rumah17.id,
-      status_booking: 'di booking'
+      status_booking: 'di booking',
+      nominal_booking: 1000000,
+      tanggal_booking: '2020-12-01'
     });
   
     await model.booking.create({
       id_konsumen: dataKonsumen8.id,
       id_rumah: rumah20.id,
-      status_booking: 'terjual'
+      status_booking: 'terjual',
+      nominal_booking: 1000000,
+      tanggal_booking: '2020-12-01'
     });
   
     // booking rumah blok 3
     await model.booking.create({
       id_konsumen: dataKonsumen9.id,
       id_rumah: rumah23.id,
-      status_booking: 'terjual'
+      status_booking: 'terjual',
+      nominal_booking: 1000000,
+      tanggal_booking: '2020-12-01'
     });
   
     await model.booking.create({
       id_konsumen: dataKonsumen10.id,
       id_rumah: rumah25.id,
-      status_booking: 'terjual'
+      status_booking: 'terjual',
+      nominal_booking: 1000000,
+      tanggal_booking: '2020-12-01'
     });
   
     await model.booking.create({
       id_konsumen: dataKonsumen11.id,
       id_rumah: rumah29.id,
-      status_booking: 'di booking'
+      status_booking: 'di booking',
+      nominal_booking: 1000000,
+      tanggal_booking: '2020-12-01'
     });
   
     await model.booking.create({
       id_konsumen: dataKonsumen12.id,
       id_rumah: rumah30.id,
-      status_booking: 'di booking'
+      status_booking: 'di booking',
+      nominal_booking: 1000000,
+      tanggal_booking: '2020-12-01'
     });
   } catch(e) {
     console.error('seeder:', e.message);

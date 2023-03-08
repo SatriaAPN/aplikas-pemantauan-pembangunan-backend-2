@@ -143,7 +143,11 @@ const booking = sequelize.define('booking', {
   nominal_booking: {
     type: DataTypes.INTEGER,
     allowNull: false,
-  }
+  },
+  tanggal_booking: {
+    type: DataTypes.DATEONLY,
+    allowNull: false,
+  },
 }, {
   // Other model options go here
   freezeTableName: true
