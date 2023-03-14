@@ -297,20 +297,26 @@ app.post('/rumah/status/:idRumah', async(req, res) => {
       }
     });
 
-    if (bookingRumah) {
-      bookingRumah.update({
-        status_booking: statusBooking,
-        nominal_booking: nominalBooking,
-        tanggal_booking: tanggalBooking
-      });
+    if(statusBooking === 'belum terjual') {
+      if(bookingRumah) {
+        await bookingRumah.destroy();
+      }
     } else {
-      await booking.create({
-        id_konsumen: idKonsumen,
-        id_rumah: idRumah,
-        status_booking: statusBooking,
-        nominal_booking: nominalBooking,
-        tanggal_booking: tanggalBooking
-      });
+      if (bookingRumah) {
+        bookingRumah.update({
+          status_booking: statusBooking,
+          nominal_booking: nominalBooking,
+          tanggal_booking: tanggalBooking
+        });
+      } else {
+        await booking.create({
+          id_konsumen: idKonsumen,
+          id_rumah: idRumah,
+          status_booking: statusBooking,
+          nominal_booking: nominalBooking,
+          tanggal_booking: tanggalBooking
+        });
+      }
     }
 
     res.send({
