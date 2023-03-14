@@ -111,7 +111,7 @@ app.post('/rumah/progress/:idRumah', uploadMiddleware.single('image'), async (re
   try {
     const { idRumah } = req.params;
     const file = req.file;
-    const { persentaseProgress } = req.body;
+    const { persentaseProgress, detailProgress } = req.body;
 console.log(idRumah)
     const dataRumah = await rumah.findOne({
       where: {
@@ -125,7 +125,8 @@ console.log(idRumah)
 
     const dataProgress = await dataRumah.update({
       progress_pembangunan: persentaseProgress,
-      image_progress_pembangunan: file.filename
+      image_progress_pembangunan: file.filename,
+      details_progress_pembangunan: detailProgress
     });
 
     res.send(dataProgress);
@@ -133,12 +134,6 @@ console.log(idRumah)
     console.log(e);
     res.status(400).send(e.message);
   }
-  console.log(req.file);
-
-
-  // save image 
-
-  res.send('ok');
 });
 
 app.post('/register', async(req, res) => {

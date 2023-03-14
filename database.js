@@ -96,6 +96,10 @@ const rumah = sequelize.define('rumah', {
     allowNull: false,
     defaultValue: 0
   },
+  details_progress_pembangunan: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
   nomor_rumah: {
     type: DataTypes.STRING,
     allowNull: false
