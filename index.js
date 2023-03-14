@@ -3,6 +3,43 @@ dotenv.config();
 const express = require('express');
 const app = express();
 const cors = require('cors');
+const multer = require('multer');
+const {v4: uuidv4} = require("uuid")
+const path = require("path")
+
+const storage = multer.diskStorage({
+  destination : function(req,file,cb){
+    cb(null,"uploads")
+  },
+  filename: function(req,file, cb){
+    cb(null,`${uuidv4()}_${path.extname(file.originalname)}`)
+  }
+})
+
+const fileFilter = (req,file,cb) => {
+  const allowedFileTypes = ["image/jpeg","image/jpg","image/png"]
+  if(allowedFileTypes.includes(file.mimetype)){
+      cb(null,true)
+  }else{
+      cb(null,false)
+  }
+}
+const uploadMiddleware = multer({storage,fileFilter})
+
+// const upload = multer.diskStorage({ 
+//   dest: 'uploads/', 
+//   limits: { fileSize: 1000000 }, 
+//   fileFilter(req, file, cb) {
+//     if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+//       return cb(new Error('Please upload an image'));
+//     }
+
+//     cb(undefined, true);
+//   },
+//   filename(req, file, cb) {
+//     cb(undefined, new Date().getTime() + file.originalname);
+//   } 
+// });
 
 const db = require('./database');
 const { Op } = require('sequelize');
@@ -16,6 +53,9 @@ const {
 } = db.model;
 
 const seeder = require('./seeder');
+
+// access image
+app.use('/uploads', express.static('uploads'));
 
 app.use(cors());
 
@@ -65,6 +105,40 @@ app.post('/login', async(req, res) => {
     console.log(e);
     res.status(400).send(e.message);
   }
+});
+
+app.post('/rumah/progress/:idRumah', uploadMiddleware.single('image'), async (req, res) => {
+  try {
+    const { idRumah } = req.params;
+    const file = req.file;
+    const { persentaseProgress } = req.body;
+console.log(idRumah)
+    const dataRumah = await rumah.findOne({
+      where: {
+        id: idRumah
+      }
+    });
+
+    if (!dataRumah) {
+      throw new Error('data rumah tidak ditemukan');
+    }
+
+    const dataProgress = await dataRumah.update({
+      progress_pembangunan: persentaseProgress,
+      image_progress_pembangunan: file.filename
+    });
+
+    res.send(dataProgress);
+  } catch(e) {
+    console.log(e);
+    res.status(400).send(e.message);
+  }
+  console.log(req.file);
+
+
+  // save image 
+
+  res.send('ok');
 });
 
 app.post('/register', async(req, res) => {

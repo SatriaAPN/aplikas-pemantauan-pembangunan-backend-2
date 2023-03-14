@@ -100,6 +100,10 @@ const rumah = sequelize.define('rumah', {
     type: DataTypes.STRING,
     allowNull: false
   },
+  image_progress_pembangunan: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
 }, {
   // Other model options go here
   freezeTableName: true
