@@ -186,6 +186,64 @@ app.post('/register', async(req, res) => {
   }
 });
 
+// update akun
+app.put('/akun/:idAkun', async(req, res) => {
+  try {
+    const { idAkun } = req.params;
+    const { email, kataSandi, nama, noHp, nik, pekerjaan, alamat } = req.body;
+
+    const dataAkun = await akun.findOne({
+      where: {
+        id: idAkun
+      }
+    });
+
+    if (!dataAkun) {
+      throw new Error('data akun tidak ditemukan');
+    }
+
+    await dataAkun.update({
+      nama,
+      email,
+      kata_sandi: kataSandi
+    });
+
+    if (dataAkun.role === 'Konsumen') {
+      const dataKonsumen = await konsumen.findOne({
+        where: {
+          id_akun: idAkun
+        }
+      });
+  
+      if (!dataKonsumen) {
+        throw new Error('data konsumen tidak ditemukan');
+      }
+
+      await dataKonsumen.update({
+        nama,
+        no_telp: noHp,
+        nik,
+        pekerjaan,
+        alamat
+      });
+    }
+
+    res.send({
+      status: 'ok',
+      data: {
+        email,
+        kataSandi,
+        nama,
+        noHp
+      }
+    });
+  } catch (e) {
+    console.log(e);
+    res.status(400).send(e.message);
+  }
+});
+
+
 app.get('/kustomer', async(req, res) => {
   try {
     const dataKustomer = await sequelize.query(
