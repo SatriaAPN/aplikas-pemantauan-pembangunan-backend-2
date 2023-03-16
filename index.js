@@ -301,7 +301,11 @@ app.get('/seluruh-akun', async(req, res) => {
       { type: sequelize.QueryTypes.SELECT }
     );
 
-    res.send(dataKustomer);
+    res.json({
+      data: {
+        seluruhAkun: dataKustomer
+      }
+    });
   } catch (error) {
     console.log(error);
     res.status(400).send(error.message);
