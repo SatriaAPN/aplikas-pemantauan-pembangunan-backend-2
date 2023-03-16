@@ -312,6 +312,53 @@ app.get('/seluruh-akun', async(req, res) => {
   }
 });
 
+app.get('/akun/:idAkun', async(req, res) => {
+  try {
+    const { idAkun } = req.params;
+
+    const dataKustomer = await sequelize.query(
+      `
+        select
+          a.*,
+          to_json(k) as "dataKonsumen",
+          to_json(b) as "dataBooking"
+        from akun a 
+        left join konsumen k 
+          on k.id_akun = a.id
+        left join (
+          select
+            b.*,
+            to_json(r) as "dataRumah" 
+          from booking b
+          left join rumah r 
+            on r.id = b.id_rumah
+        ) b 
+          on b.id_konsumen = k.id
+        where a.id = :idAkun
+      `,
+      { 
+        type: sequelize.QueryTypes.SELECT,
+        replacements: {
+          idAkun
+        }
+      }
+    );
+
+    if (!dataKustomer.length) {
+      throw new Error('akun tidak ditemukan');
+    }
+
+    res.json({
+      data: {
+        akun: dataKustomer[0]
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).send(error.message);
+  }
+});
+
 app.post('/rumah/status/:idRumah', async(req, res) => {
   try {
     const { idKonsumen, statusBooking, nominalBooking, tanggalBooking } = req.body;
