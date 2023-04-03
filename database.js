@@ -3,9 +3,11 @@ const { Sequelize, DataTypes, Op } = require('sequelize');
 const user = process.env.DB_USER || 'postgres' ;
 const password = process.env.DB_PASSWORD || 'admin';
 const port = process.env.DB_PORT || 5432;
+const databaseUrl = process.env.DATABASE_URL || `postgres://${user}:${password}@localhost:${port}/ahp_spk`;
+
 
 // Option 1: Passing a connection URI
-const sequelize = new Sequelize(`postgres://${user}:${password}@localhost:${port}/pemantauan_pembangunan`,
+const sequelize = new Sequelize(databaseUrl,
 {
   logging: false
 }) // Example for postgres

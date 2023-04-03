@@ -6,6 +6,7 @@ const cors = require('cors');
 const multer = require('multer');
 const {v4: uuidv4} = require("uuid")
 const path = require("path")
+const port = process.env.PORT || 3000;
 
 const storage = multer.diskStorage({
   destination : function(req,file,cb){
@@ -634,7 +635,7 @@ app.get('/konsumen/rumah/:idKonsumen', async(req, res) => {
   }
 });
 
-app.listen(3000, async() => {
+app.listen(port, async() => {
   try {
     await sequelize.authenticate();
     console.log('Connection has been established successfully.');
